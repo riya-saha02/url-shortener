@@ -1,0 +1,238 @@
+:root {
+  /* --- Color tokens --- */
+  --bg: #12181c;
+  --bg-raised: #18211f;
+  --panel: #1b2420;
+  --panel-border: #2a3530;
+  --ink: #eef2ee;
+  --ink-dim: #9fb0a8;
+  --ink-faint: #647167;
+  --accent: #ffb627;       /* signal amber — the "snip" color */
+  --accent-ink: #1a1400;
+  --cyan: #5eead4;         /* secondary — charts / links */
+  --danger: #ff6b6b;
+  --success: #5eead4;
+
+  /* --- Type --- */
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(255, 182, 39, 0.07), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(94, 234, 212, 0.06), transparent 40%);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+a { color: var(--cyan); }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+input, button {
+  font-size: 15px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* --- Layout shell --- */
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand .cut {
+  color: var(--accent);
+}
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+
+.btn {
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  background: transparent;
+  color: var(--ink);
+  padding: 9px 16px;
+  font-weight: 500;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover {
+  border-color: var(--ink-faint);
+}
+
+.btn:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #ffc555;
+  border-color: #ffc555;
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-danger-ghost {
+  border-color: transparent;
+  color: var(--ink-faint);
+  padding: 6px 10px;
+}
+.btn-danger-ghost:hover {
+  color: var(--danger);
+  border-color: rgba(255, 107, 107, 0.35);
+}
+
+.container {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  flex: 1;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field label {
+  font-size: 13px;
+  color: var(--ink-dim);
+  font-weight: 500;
+}
+
+.field input {
+  background: var(--bg-raised);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 11px 13px;
+  color: var(--ink);
+}
+
+.field input::placeholder {
+  color: var(--ink-faint);
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 13px;
+  margin-top: -8px;
+  margin-bottom: 12px;
+}
+
+.auth-shell {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-card .panel {
+  padding: 32px;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+
+.auth-switch a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
