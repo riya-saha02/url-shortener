@@ -8,14 +8,12 @@ A full-stack URL shortener with JWT authentication, per-link click analytics, an
 
 ## Screenshots
 
+## Screenshots
+
 | Sign in | Dashboard |
 |---|---|
-| Sign-in screen | Link creation, list, and analytics |
-
-<img width="706" height="790" alt="WhatsApp Image 2026-07-20 at 1 46 43 AM" src="https://github.com/user-attachments/assets/feb98a07-3965-47ad-891b-12fe0f5b8350" />
-<img width="1600" height="840" alt="WhatsApp Image 2026-07-20 at 2 23 51 AM" src="https://github.com/user-attachments/assets/b61a1ab7-f469-419a-b2a3-a003d475042b" />
-<img width="1600" height="788" alt="WhatsApp Image 2026-07-20 at 2 26 14 AM" src="https://github.com/user-attachments/assets/fa7ee174-dcb6-4606-a249-859a4514c884" />
-<img width="1600" height="794" alt="WhatsApp Image 2026-07-20 at 1 54 59 AM" src="https://github.com/user-attachments/assets/dfa86ecf-256a-4298-b021-7ee59b670445" />
+| <img src="https://github.com/user-attachments/assets/feb98a07-3965-47ad-891b-12fe0f5b8350" width="350" alt="Sign in" /> | <img src="https://github.com/user-attachments/assets/dfa86ecf-256a-4298-b021-7ee59b670445" width="350" alt="Dashboard" /> |
+| <img src="https://github.com/user-attachments/assets/b61a1ab7-f469-419a-b2a3-a003d475042b" width="350" alt="Analytics 1" /> | <img src="https://github.com/user-attachments/assets/fa7ee174-dcb6-4606-a249-859a4514c884" width="350" alt="Analytics 2" /> |
 
 
 ---
