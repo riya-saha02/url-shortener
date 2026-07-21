@@ -12,7 +12,11 @@ A full-stack URL shortener with JWT authentication, per-link click analytics, an
 |---|---|
 | Sign-in screen | Link creation, list, and analytics |
 
-*(Add 2–4 screenshots here — sign-in page, dashboard with a shortened link, the analytics panel, and the Swagger UI. This is the single biggest thing that makes a README convert a recruiter from skimming to clicking your repo.)*
+<img width="706" height="790" alt="WhatsApp Image 2026-07-20 at 1 46 43 AM" src="https://github.com/user-attachments/assets/feb98a07-3965-47ad-891b-12fe0f5b8350" />
+<img width="1600" height="840" alt="WhatsApp Image 2026-07-20 at 2 23 51 AM" src="https://github.com/user-attachments/assets/b61a1ab7-f469-419a-b2a3-a003d475042b" />
+<img width="1600" height="788" alt="WhatsApp Image 2026-07-20 at 2 26 14 AM" src="https://github.com/user-attachments/assets/fa7ee174-dcb6-4606-a249-859a4514c884" />
+<img width="1600" height="794" alt="WhatsApp Image 2026-07-20 at 1 54 59 AM" src="https://github.com/user-attachments/assets/dfa86ecf-256a-4298-b021-7ee59b670445" />
+
 
 ---
 
@@ -137,7 +141,7 @@ curl -X POST http://localhost:8080/api/urls/shorten \
 
 ---
 
-## What's not included (good "next steps" to mention in an interview)
+## Future Scope
 
 - Redis-backed rate limiting / cache for multi-instance deployments
 - QR code generation per short link
@@ -148,15 +152,3 @@ curl -X POST http://localhost:8080/api/urls/shorten \
 
 ---
 
-## Suggested resume bullet points
-
-- Built a full-stack URL shortener (Spring Boot 3, Spring Security 6, JWT, React) with Base62-encoded short-link generation, click analytics, and per-user rate limiting
-- Containerized the application with Docker and Docker Compose, orchestrating the API and MySQL as independent services on a shared network
-- Designed a caching layer (Caffeine) in front of the redirect path to handle read-heavy traffic, with cache invalidation on link deactivation
-- Implemented stateless JWT authentication with BCrypt password hashing and ownership-scoped authorization on all link/analytics endpoints
-
----
-
-## License
-
-MIT
