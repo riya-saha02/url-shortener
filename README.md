@@ -1,8 +1,18 @@
 # Snip — URL Shortener
 
-A full-stack URL shortener with JWT authentication, per-link click analytics, and rate limiting — built with Spring Boot 3 + Spring Security 6 on the backend and React on the frontend.
+A full-stack URL shortener with JWT authentication, per-link click analytics, and rate limiting — built with **Spring Boot 3 + Spring Security 6** on the backend and **React** on the frontend. Fully containerized with **Docker Compose** (app + MySQL) for one-command spin-up.
 
-Designed to run out of the box with zero infrastructure setup (H2 in-memory DB) for demos and interviews, with a MySQL profile ready for a "real" deployment.
+![Java](https://img.shields.io/badge/Java-17-orange) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-brightgreen) ![React](https://img.shields.io/badge/React-18-61DAFB) ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED) ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1)
+
+---
+
+## Screenshots
+
+| Sign in | Dashboard |
+|---|---|
+| Sign-in screen | Link creation, list, and analytics |
+
+*(Add 2–4 screenshots here — sign-in page, dashboard with a shortened link, the analytics panel, and the Swagger UI. This is the single biggest thing that makes a README convert a recruiter from skimming to clicking your repo.)*
 
 ---
 
@@ -16,15 +26,19 @@ Designed to run out of the box with zero infrastructure setup (H2 in-memory DB) 
 - **Rate limiting** — in-memory token-bucket limiter caps link creation per user to prevent abuse
 - **Caching** — Caffeine in-memory cache in front of the redirect lookup, since reads (clicks) vastly outnumber writes (link creation)
 - **Ownership & auth checks** — a user can only see/deactivate/view analytics for their own links
+- **Containerized** — Dockerfile + `docker-compose.yml` bring up the API and a MySQL 8 instance together with a single command
+- **API docs** — interactive Swagger UI at `/swagger-ui/index.html`
 
 ## Tech stack
 
-| Layer | Tech |
-|---|---|
-| Backend | Java 17, Spring Boot 3.3, Spring Security 6, Spring Data JPA, JJWT |
-| Database | H2 (default, in-memory) / MySQL (production profile) |
-| Cache | Caffeine |
-| Frontend | React 18, React Router, Axios, Recharts, Vite |
+| Layer      | Tech                                                                 |
+|------------|------------------------------------------------------------------------|
+| Backend    | Java 17, Spring Boot 3.3, Spring Security 6, Spring Data JPA, JJWT     |
+| Database   | MySQL 8 (Docker) / H2 in-memory (local dev profile)                    |
+| Cache      | Caffeine                                                                |
+| Frontend   | React 18, React Router, Axios, Recharts, Vite                          |
+| Infra      | Docker, Docker Compose                                                  |
+| API docs   | springdoc-openapi (Swagger UI)                                          |
 
 ## Architecture notes (useful for interviews)
 
@@ -32,14 +46,29 @@ Designed to run out of the box with zero infrastructure setup (H2 in-memory DB) 
 - **Read/write asymmetry**: a link is written once but read (clicked) many times, so `resolve()` is `@Cacheable` — the DB is only hit on cache miss, and click-event logging happens *after* the redirect response is prepared so it doesn't block the user's redirect.
 - **Stateless auth**: no server-side session; the JWT itself carries identity, verified per-request in `JwtAuthFilter` before Spring Security's filter chain.
 - **Rate limiting** is a simple in-memory token bucket keyed by user email — swappable for a Redis-backed bucket (e.g. Bucket4j + Redis) if this needed to run across multiple instances.
+- **Containerization**: the backend runs in its own container against a MySQL container on a shared Docker network, so the whole stack — API + DB — comes up with `docker compose up`, no local MySQL install required.
 
 ---
 
 ## Running locally
 
-### Backend
+### Option A — Docker (recommended, one command)
 
-Requires Java 17+ and Maven.
+Requires Docker Desktop.
+
+```bash
+docker compose up --build
+```
+
+This brings up:
+- `url-shortener` — the Spring Boot API on `http://localhost:8080`
+- `mysql-1` — MySQL 8 on port `3307`
+
+Then start the frontend separately (see below) pointed at `http://localhost:8080`.
+
+### Option B — Run backend and frontend manually
+
+**Backend** (requires Java 17+ and Maven):
 
 ```bash
 cd backend
@@ -48,18 +77,15 @@ mvn spring-boot:run
 
 The API starts on `http://localhost:8080` using an in-memory H2 database — no setup needed. The H2 console is available at `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:urlshortener`).
 
-To run against MySQL instead:
+To run against MySQL instead of H2:
 
 ```bash
-# create a MySQL DB, then:
 export DB_USERNAME=root
 export DB_PASSWORD=yourpassword
 mvn spring-boot:run -Dspring-boot.run.profiles=mysql
 ```
 
-### Frontend
-
-Requires Node 18+.
+**Frontend** (requires Node 18+):
 
 ```bash
 cd frontend
@@ -70,19 +96,29 @@ npm run dev
 
 Open `http://localhost:5173`, register an account, and start shortening links.
 
+### API docs
+
+With the backend running, interactive Swagger UI is available at:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+Raw OpenAPI spec: `http://localhost:8080/v3/api-docs`
+
 ---
 
 ## API reference
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/api/auth/register` | — | Create an account, returns JWT |
-| POST | `/api/auth/login` | — | Log in, returns JWT |
-| POST | `/api/urls/shorten` | ✅ | Create a short link |
-| GET | `/api/urls` | ✅ | List your links |
-| DELETE | `/api/urls/{code}` | ✅ | Deactivate a link |
-| GET | `/api/urls/{code}/analytics` | ✅ | Click analytics for a link |
-| GET | `/r/{code}` | — | Public redirect (302) |
+| Method | Endpoint                     | Auth | Description                    |
+| ------ | ----------------------------- | ---- | ------------------------------- |
+| POST   | `/api/auth/register`          | —    | Create an account, returns JWT  |
+| POST   | `/api/auth/login`             | —    | Log in, returns JWT             |
+| POST   | `/api/urls/shorten`           | ✅   | Create a short link             |
+| GET    | `/api/urls`                   | ✅   | List your links                 |
+| DELETE | `/api/urls/{code}`            | ✅   | Deactivate a link               |
+| GET    | `/api/urls/{code}/analytics`  | ✅   | Click analytics for a link      |
+| GET    | `/r/{code}`                   | —    | Public redirect (302)           |
 
 Authenticated requests need `Authorization: Bearer <token>`.
 
@@ -106,13 +142,21 @@ curl -X POST http://localhost:8080/api/urls/shorten \
 - Redis-backed rate limiting / cache for multi-instance deployments
 - QR code generation per short link
 - Custom domains
-- Dockerfile + docker-compose for one-command spin-up
 - Refresh tokens (current JWT is a single 24h access token)
+- CI pipeline (GitHub Actions build + test on push)
+- A hosted live demo (currently runs locally via Docker Compose)
 
 ---
 
 ## Suggested resume bullet points
 
 - Built a full-stack URL shortener (Spring Boot 3, Spring Security 6, JWT, React) with Base62-encoded short-link generation, click analytics, and per-user rate limiting
+- Containerized the application with Docker and Docker Compose, orchestrating the API and MySQL as independent services on a shared network
 - Designed a caching layer (Caffeine) in front of the redirect path to handle read-heavy traffic, with cache invalidation on link deactivation
 - Implemented stateless JWT authentication with BCrypt password hashing and ownership-scoped authorization on all link/analytics endpoints
+
+---
+
+## License
+
+MIT
